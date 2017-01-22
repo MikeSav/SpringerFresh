@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Springer Fresh</title>
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="styles/bootstrap.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body data-ng-app="SpringerFresh" data-ng-cloak>
+<div class="container" data-ng-controller="TicketCtrl as ticket">
+  <form data-ng-submit="ticket.getTicketStatus()">
+    <div class="row">
+      <div class="col-xs-12">
+        <h2>Check on Watermark Status</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <input type="text" class="form-control" placeholder="Watermark Ticket"
+               data-ng-model="ticket.watermarkTicket">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <input type="submit" value="Query Status" class="btn btn-primary"
+               data-ng-disabled="!ticket.watermarkTicket.length > 0">
+      </div>
+    </div>
+  </form>
+
+  <div data-ng-if="ticket.showNotFound" class="ticket-not-found">
+    <div class="row">
+      <div class="col-xs-12"><h4>No Watermark for ticket: {{ ticket.watermarkTicket }}</h4></div>
+    </div>
+  </div>
+
+  <div data-ng-if="ticket.queryTrue" class="ticket-result">
+    <div class="row">
+      <div class="col-xs-12 ticket-result__header"><h4>Watermark</h4></div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        Content
+      </div>
+      <div class="col-xs-8" data-ng-bind="ticket.processTicket.content">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        Author
+      </div>
+      <div class="col-xs-8" data-ng-bind="ticket.processTicket.author">
+      </div>
+    </div>
+    <div class="row" data-ng-if="ticket.processTicket.topic">
+      <div class="col-xs-4">
+        Topic
+      </div>
+      <div class="col-xs-8" data-ng-bind="ticket.processTicket.topic">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-4">
+        Title
+      </div>
+      <div class="col-xs-8" data-ng-bind="ticket.processTicket.title">
+      </div>
+    </div>
+  </div>
+  <div data-ng-if="ticket.recentTickets" class="recent-tickets">
+    <div class="row">
+      <div class="col-xs-12 recent-tickets__header"><h4>Recent Tickets</h4></div>
+    </div>
+    <div class="row recent-tickets__row" data-ng-repeat="t in ticket.recentTickets">
+      <div class="col-xs-12" data-ng-bind="t" data-ng-click="ticket.checkRecentTicket(t)"></div>
+    </div>
+  </div>
+</div>
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/es6-shim/es6-shim.js"></script>
+<script src="bower_components/angular-mocks/angular-mocks.js"></script>
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<script src="scripts/controllers/TicketCtrl.js"></script>
+<script src="scripts/services/Watermark.js"></script>
+<script src="scripts/services/WatermarkService.js"></script>
+<!-- endbuild -->
+</body>
+</html>
